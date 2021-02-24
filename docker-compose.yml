@@ -1,0 +1,20 @@
+version: "3.1"
+
+services:
+  app:
+    image: slowsol/valuator-app
+    env_file: Valuator/.env
+    environment: 
+      ASPNETCORE_ENVIRONMENT: Development
+    build:
+      context: Valuator/
+      dockerfile: Dockerfile
+    container_name: valuator-app
+    ports:
+      - "8080:80"
+
+  redis:
+    image: redis
+    container_name: valuator-redis
+    ports:
+      - "6379:6379"
