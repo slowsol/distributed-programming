@@ -9,7 +9,6 @@ namespace Valuator.Pages
 {
     public class IndexModel : PageModel
     {
-
         private readonly IRepository _repository;
         private readonly ILogger<IndexModel> _logger;
 
@@ -39,7 +38,7 @@ namespace Valuator.Pages
             _repository.Save(rankKey, AnalyzeRank(text).ToString());
 
             string similarityKey = "SIMILARITY-" + id;
-            _repository.Save(similarityKey, AnalyzeSimilarity(text, textPrefix).ToString());
+            _repository.Save(similarityKey, AnalyzeSimilarity(textPrefix, text).ToString());
 
             return Redirect($"summary?id={id}");
         }
@@ -49,7 +48,7 @@ namespace Valuator.Pages
             return (double)text.Count(c => !char.IsLetter(c)) / text.Length;
         }
 
-        private double AnalyzeSimilarity(string text, string prefix)
+        private double AnalyzeSimilarity(string prefix, string text)
         {
             var texts = _repository.GetAllByPrefix(prefix);
             var duplicatesCount = texts.Where(t => t == text).Count() - 1;

@@ -18,7 +18,11 @@ namespace Valuator.Data.Repositories
 
         private IServer _server
         {
-            get { return _redis.GetServer(System.Environment.GetEnvironmentVariable("REDIS_HOST") + ":" + System.Environment.GetEnvironmentVariable("REDIS_PORT")); }
+            get 
+            {
+                return _redis.GetServer(System.Environment.GetEnvironmentVariable("REDIS_HOST") + ":"  
+                    + System.Environment.GetEnvironmentVariable("REDIS_PORT"));
+            }
         }
 
         public RedisRepository(ILogger<IRepository> logger)
@@ -39,6 +43,7 @@ namespace Valuator.Data.Repositories
 
             return values.ConvertAll(v => Get((string)v));
         }
+
         public void Save(string key, string value)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value))
