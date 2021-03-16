@@ -1,20 +1,42 @@
 version: "3.1"
 
 services:
+  nginx:
+    image: nginx:latest
+    container_name: valuator-nginx
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/logs/:/var/log/nginx/
+    depends_on:
+      - app
+    restart: always
+    networks:
+      - valuator-network
+
   app:
     image: slowsol/valuator-app
+    scale: 3
     env_file: Valuator/.env
     environment: 
       ASPNETCORE_ENVIRONMENT: Development
     build:
       context: Valuator/
       dockerfile: Dockerfile
-    container_name: valuator-app
-    ports:
-      - "8080:80"
+    depends_on:
+      - redis
+    networks:
+      - valuator-network
 
   redis:
-    image: redis
+    image: redis:latest
     container_name: valuator-redis
     ports:
       - "6379:6379"
+    networks:
+      - valuator-network
+
+networks:
+  valuator-network:
+    
