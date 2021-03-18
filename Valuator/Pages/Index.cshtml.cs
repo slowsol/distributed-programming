@@ -26,6 +26,11 @@ namespace Valuator.Pages
 
         public IActionResult OnPost(string text)
         {
+            if (string.IsNullOrEmpty(text))
+            {
+                return new NoContentResult();
+            }
+
             _logger.LogDebug(text);
 
             string id = Guid.NewGuid().ToString();
