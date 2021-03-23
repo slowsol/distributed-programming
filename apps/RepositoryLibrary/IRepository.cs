@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Valuator.Data.Repositories
+namespace RepositoryLibrary
 {
     public interface IRepository
     {

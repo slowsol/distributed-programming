@@ -1,6 +1,6 @@
-﻿using Valuator.Data.Repositories;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using RepositoryLibrary;
 
 namespace Valuator.Pages
 {

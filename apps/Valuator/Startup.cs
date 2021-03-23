@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.StackExchangeRedis;
-using Valuator.Data.Repositories;
+using RepositoryLibrary;
 using StackExchange.Redis;
 
 namespace Valuator

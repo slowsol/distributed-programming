@@ -11,19 +11,18 @@ services:
       - ./nginx/logs/:/var/log/nginx/
     depends_on:
       - app
-    restart: always
     networks:
       - valuator-network
 
   app:
     image: slowsol/valuator-app
     scale: 3
-    env_file: Valuator/.env
+    env_file: apps/Valuator/.env
     environment: 
       ASPNETCORE_ENVIRONMENT: Development
     build:
-      context: Valuator/
-      dockerfile: Dockerfile
+      context: apps
+      dockerfile: Valuator/Dockerfile
     depends_on:
       - redis
     networks:

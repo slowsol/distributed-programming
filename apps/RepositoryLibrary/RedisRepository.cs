@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
-namespace Valuator.Data.Repositories
+namespace RepositoryLibrary
 {
     public class RedisRepository : IRepository
     {
@@ -13,15 +13,18 @@ namespace Valuator.Data.Repositories
 
         private IDatabase _db
         {
-            get { return _redis.GetDatabase(); }
+            get
+            {
+                return _redis.GetDatabase();
+            }
         }
 
         private IServer _server
         {
-            get 
+            get
             {
-                return _redis.GetServer(System.Environment.GetEnvironmentVariable("REDIS_HOST") + ":"  
-                    + System.Environment.GetEnvironmentVariable("REDIS_PORT"));
+                return _redis.GetServer(System.Environment.GetEnvironmentVariable("REDIS_HOST") 
+                    + ":" + System.Environment.GetEnvironmentVariable("REDIS_PORT"));
             }
         }
 

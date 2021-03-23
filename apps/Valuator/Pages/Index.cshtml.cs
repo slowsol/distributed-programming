@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Valuator.Data.Repositories;
+using RepositoryLibrary;
 
 namespace Valuator.Pages
 {
