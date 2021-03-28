@@ -1,9 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "X1XERJAjm5pWHS/ysNohxts4BY9fkOqLkl/dIDdKv+AQMVCkwzUO2/b887IB9lMK4Tc5Z6N9OY728AsWfRIx8Q==",
+  "dgSpecHash": "GUgN0zfluS/OhFasNk+B5DuT4/BNYefNapzN3p2nIjNbqUogoHiQjrsBkyniD3BN1qm4QGLahBdfCTCj9T928g==",
   "success": true,
-  "projectFilePath": "/Users/user/Projects/distributed-programming/RepositoryLibrary/RepositoryLibrary.csproj",
+  "projectFilePath": "/Users/user/Projects/distributed-programming/apps/RepositoryLibrary/RepositoryLibrary.csproj",
   "expectedPackageFiles": [
+    "/Users/user/.nuget/packages/microsoft.extensions.dependencyinjection/5.0.0/microsoft.extensions.dependencyinjection.5.0.0.nupkg.sha512",
+    "/Users/user/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/5.0.0/microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
+    "/Users/user/.nuget/packages/microsoft.extensions.logging/5.0.0/microsoft.extensions.logging.5.0.0.nupkg.sha512",
+    "/Users/user/.nuget/packages/microsoft.extensions.logging.abstractions/5.0.0/microsoft.extensions.logging.abstractions.5.0.0.nupkg.sha512",
+    "/Users/user/.nuget/packages/microsoft.extensions.options/5.0.0/microsoft.extensions.options.5.0.0.nupkg.sha512",
+    "/Users/user/.nuget/packages/microsoft.extensions.primitives/5.0.0/microsoft.extensions.primitives.5.0.0.nupkg.sha512",
     "/Users/user/.nuget/packages/microsoft.netcore.platforms/5.0.0/microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "/Users/user/.nuget/packages/microsoft.win32.registry/5.0.0/microsoft.win32.registry.5.0.0.nupkg.sha512",
     "/Users/user/.nuget/packages/microsoft.win32.systemevents/5.0.0/microsoft.win32.systemevents.5.0.0.nupkg.sha512",

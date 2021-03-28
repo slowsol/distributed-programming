@@ -28,9 +28,9 @@ namespace Valuator.Pages
 
             if (string.IsNullOrEmpty(text)) { return; }
 
-            Rank = double.Parse(_repository.Get("RANK-" + id));
-
             Similarity = double.Parse(_repository.Get("SIMILARITY-" + id));
+
+            Rank = double.Parse(_repository.Get("RANK-" + id));
         }
     }
 }

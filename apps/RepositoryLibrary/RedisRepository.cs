@@ -23,7 +23,7 @@ namespace RepositoryLibrary
         {
             get
             {
-                return _redis.GetServer(System.Environment.GetEnvironmentVariable("REDIS_HOST") 
+                return _redis.GetServer(System.Environment.GetEnvironmentVariable("REDIS_HOST")
                     + ":" + System.Environment.GetEnvironmentVariable("REDIS_PORT"));
             }
         }
@@ -45,6 +45,11 @@ namespace RepositoryLibrary
             var values = _server.Keys(pattern: prefix + "*").ToList();
 
             return values.ConvertAll(v => Get((string)v));
+        }
+
+        public bool IsKeyExist(string key)
+        {
+            return _db.KeyExists(key);
         }
 
         public void Save(string key, string value)

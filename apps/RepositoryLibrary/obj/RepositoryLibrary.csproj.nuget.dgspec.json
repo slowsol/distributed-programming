@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/user/Projects/distributed-programming/RepositoryLibrary/RepositoryLibrary.csproj": {}
+    "/Users/user/Projects/distributed-programming/apps/RepositoryLibrary/RepositoryLibrary.csproj": {}
   },
   "projects": {
-    "/Users/user/Projects/distributed-programming/RepositoryLibrary/RepositoryLibrary.csproj": {
+    "/Users/user/Projects/distributed-programming/apps/RepositoryLibrary/RepositoryLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/user/Projects/distributed-programming/RepositoryLibrary/RepositoryLibrary.csproj",
+        "projectUniqueName": "/Users/user/Projects/distributed-programming/apps/RepositoryLibrary/RepositoryLibrary.csproj",
         "projectName": "RepositoryLibrary",
-        "projectPath": "/Users/user/Projects/distributed-programming/RepositoryLibrary/RepositoryLibrary.csproj",
+        "projectPath": "/Users/user/Projects/distributed-programming/apps/RepositoryLibrary/RepositoryLibrary.csproj",
         "packagesPath": "/Users/user/.nuget/packages/",
-        "outputPath": "/Users/user/Projects/distributed-programming/RepositoryLibrary/obj/",
+        "outputPath": "/Users/user/Projects/distributed-programming/apps/RepositoryLibrary/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/user/.nuget/NuGet/NuGet.Config"
@@ -38,6 +38,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[5.*, )"
+            },
             "StackExchange.Redis": {
               "target": "Package",
               "version": "[2.2.4, )"

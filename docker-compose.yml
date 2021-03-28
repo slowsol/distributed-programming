@@ -1,21 +1,7 @@
 version: "3.1"
 
 services:
-  nginx:
-    image: nginx:latest
-    container_name: valuator-nginx
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/logs/:/var/log/nginx/
-    depends_on:
-      - app
-    networks:
-      - valuator-network
-
-  app:
-    image: slowsol/valuator-app
+  valuator_app:
     scale: 3
     env_file: apps/Valuator/.env
     environment: 
@@ -25,17 +11,53 @@ services:
       dockerfile: Valuator/Dockerfile
     depends_on:
       - redis
+      - nats
+      - rank_calculator_app
     networks:
-      - valuator-network
+      - valuator_network
+
+  rank_calculator_app:
+    scale: 2
+    env_file: apps/RankCalculator/.env
+    environment: 
+      ASPNETCORE_ENVIRONMENT: Development
+    build:
+      context: apps
+      dockerfile: RankCalculator/Dockerfile
+    stdin_open: true
+    tty: true
+    depends_on:
+      - redis
+    networks:
+      - valuator_network 
+
+  nginx:
+    image: nginx:latest
+    container_name: valuator_nginx
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/logs/:/var/log/nginx/
+    depends_on:
+      - valuator_app
+    networks:
+      - valuator_network
 
   redis:
     image: redis:latest
-    container_name: valuator-redis
+    container_name: valuator_redis
     ports:
       - "6379:6379"
     networks:
-      - valuator-network
+      - valuator_network
+
+  nats:
+    image: nats
+    container_name: valuator_nats
+    networks: 
+      - valuator_network
 
 networks:
-  valuator-network:
+  valuator_network:
     

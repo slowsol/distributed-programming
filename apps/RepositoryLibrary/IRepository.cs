@@ -7,6 +7,7 @@ namespace RepositoryLibrary
         string Get(string key);
         List<string> GetAllByPrefix(string prefix);
 
+        bool IsKeyExist(string key);
         void Save(string key, string value);
     }
 }

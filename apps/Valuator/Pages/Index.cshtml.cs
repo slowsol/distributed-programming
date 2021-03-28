@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using NATS.Client;
 using RepositoryLibrary;
 
 namespace Valuator.Pages
@@ -39,18 +41,12 @@ namespace Valuator.Pages
             string textKey = textPrefix + id;
             _repository.Save(textKey, text);
 
-            string rankKey = "RANK-" + id;
-            _repository.Save(rankKey, AnalyzeRank(text).ToString());
-
             string similarityKey = "SIMILARITY-" + id;
             _repository.Save(similarityKey, AnalyzeSimilarity(textPrefix, text).ToString());
 
-            return Redirect($"summary?id={id}");
-        }
+            PassIdToRankCalculator(id);
 
-        private double AnalyzeRank(string text)
-        {
-            return (double)text.Count(c => !char.IsLetter(c)) / text.Length;
+            return Redirect($"summary?id={id}");
         }
 
         private double AnalyzeSimilarity(string prefix, string text)
@@ -59,6 +55,23 @@ namespace Valuator.Pages
             var duplicatesCount = texts.Where(t => t == text).Count() - 1;
 
             return duplicatesCount != 0 ? 1 : 0;
+        }
+
+        private void PassIdToRankCalculator(string id)
+        {
+            var options = ConnectionFactory.GetDefaultOptions();
+
+            options.Servers = new[]
+            {
+                System.Environment.GetEnvironmentVariable("NATS_URL")
+            };
+
+            using (var connection = new ConnectionFactory().CreateConnection(options)) 
+            {
+                connection.Publish("valuator.processing.rank", Encoding.UTF8.GetBytes(id));
+                connection.Drain();
+                connection.Close();
+            }
         }
     }
 }
