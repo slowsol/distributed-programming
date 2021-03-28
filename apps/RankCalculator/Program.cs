@@ -1,7 +1,7 @@
 ﻿using System;
-using RepositoryLibrary;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+using RepositoryLibrary;
 
 namespace RankCalculator
 {

@@ -51,6 +51,8 @@ namespace RankCalculator
                     _logger.LogDebug("Rank {rank} with key {rankKey} by text id {id}", rank, rankKey, id);
 
                     _repository.Save(rankKey, rank);
+
+                    LogRank(rankKey, id);
                 });
 
                 subscription.Start();
@@ -58,6 +60,27 @@ namespace RankCalculator
                 Console.ReadLine();
 
                 subscription.Unsubscribe();
+
+                connection.Drain();
+                connection.Close();
+            }
+        }
+
+        private void LogRank(string id, string rank)
+        {
+            var options = ConnectionFactory.GetDefaultOptions();
+
+            options.Servers = new[]
+            {
+                System.Environment.GetEnvironmentVariable("NATS_URL")
+            };
+
+            using (var connection = new ConnectionFactory().CreateConnection(options))
+            {
+                var message = $"Event: RankCalculated, context id: {id}, rank: {rank}";
+                var data = Encoding.UTF8.GetBytes(message);
+
+                connection.Publish("rank_calculator.processing.rank_calculated", data);
 
                 connection.Drain();
                 connection.Close();

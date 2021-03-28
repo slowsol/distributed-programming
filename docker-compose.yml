@@ -3,7 +3,7 @@ version: "3.1"
 services:
   valuator_app:
     scale: 3
-    env_file: apps/Valuator/.env
+    env_file: apps/.env
     environment: 
       ASPNETCORE_ENVIRONMENT: Development
     build:
@@ -18,7 +18,7 @@ services:
 
   rank_calculator_app:
     scale: 2
-    env_file: apps/RankCalculator/.env
+    env_file: apps/.env
     environment: 
       ASPNETCORE_ENVIRONMENT: Development
     build:
@@ -30,6 +30,21 @@ services:
       - redis
     networks:
       - valuator_network 
+  
+  events_logger_app:
+    scale: 2
+    env_file: apps/.env
+    environment: 
+      ASPNETCORE_ENVIRONMENT: Development
+    build:
+      context: apps
+      dockerfile: EventsLogger/Dockerfile
+    stdin_open: true
+    tty: true
+    depends_on:
+      - redis
+    networks:
+      - valuator_network  
 
   nginx:
     image: nginx:latest
