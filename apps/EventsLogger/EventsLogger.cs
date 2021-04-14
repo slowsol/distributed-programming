@@ -15,7 +15,7 @@ namespace EventsLogger
             public static readonly string RankCalculated = "rank_calculator.processing.rank_calculated";
         }
 
-        private ILogger<EventsLogger> _logger;
+        private readonly ILogger<EventsLogger> _logger;
 
         public EventsLogger(ILogger<EventsLogger> logger)
         {
