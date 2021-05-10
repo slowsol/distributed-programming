@@ -26,7 +26,7 @@ namespace Valuator.Pages
 
         }
 
-        public IActionResult OnPost(string text)
+        public IActionResult OnPost(string text, string region)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -35,17 +35,20 @@ namespace Valuator.Pages
 
             _logger.LogDebug(text);
 
-            string id = Guid.NewGuid().ToString();
+            var id = Guid.NewGuid().ToString();
 
-            string textPrefix = "TEXT-";
-            string textKey = textPrefix + id;
-            _repository.Save(textKey, text);
+            _repository.SaveShard(id, region);
 
-            string similarityKey = "SIMILARITY-" + id;
+            _logger.LogDebug("LOOKUP: {id}, {region}", id, region);
 
+            var textPrefix = "TEXT-";
+            var textKey = textPrefix + id;
+
+            var similarityKey = "SIMILARITY-" + id;
             var similarity = AnalyzeSimilarity(textPrefix, text);
 
-            _repository.Save(similarityKey, similarity.ToString());
+            _repository.Save(textKey, text, id);
+            _repository.Save(similarityKey, similarity.ToString(), id);
 
             CalculateRank(id);
 
@@ -56,10 +59,7 @@ namespace Valuator.Pages
 
         private int AnalyzeSimilarity(string prefix, string text)
         {
-            var texts = _repository.GetAllByPrefix(prefix);
-            var duplicatesCount = texts.Where(t => t == text).Count() - 1;
-
-            return duplicatesCount != 0 ? 1 : 0;
+            return _repository.IsValueExist(prefix, text) ? 1 : 0;
         }
 
         private void CalculateRank(string id)
@@ -71,7 +71,7 @@ namespace Valuator.Pages
                 System.Environment.GetEnvironmentVariable("NATS_URL")
             };
 
-            using (var connection = new ConnectionFactory().CreateConnection(options)) 
+            using (var connection = new ConnectionFactory().CreateConnection(options))
             {
                 connection.Publish("valuator.processing.rank", Encoding.UTF8.GetBytes(id));
 
@@ -96,7 +96,7 @@ namespace Valuator.Pages
                 byte[] data = Encoding.UTF8.GetBytes(message);
 
                 connection.Publish("valuator.processing.similarity_calculated", data);
-                
+
                 connection.Drain();
                 connection.Close();
             }

@@ -24,13 +24,17 @@ namespace Valuator.Pages
         {
             _logger.LogDebug(id);
 
-            var text = _repository.Get("TEXT-" + id);
+            var region = _repository.GetRegionName(id);
+
+            _logger.LogDebug("LOOKUP: {textId}, {region}", id, region);
+
+            var text = _repository.Get("TEXT-" + id, id);
 
             if (string.IsNullOrEmpty(text)) { return; }
 
-            Similarity = double.Parse(_repository.Get("SIMILARITY-" + id));
+            Similarity = double.Parse(_repository.Get("SIMILARITY-" + id, id));
 
-            Rank = double.Parse(_repository.Get("RANK-" + id));
+            Rank = double.Parse(_repository.Get("RANK-" + id, id));
         }
     }
 }

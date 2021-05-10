@@ -29,28 +29,31 @@ namespace RankCalculator
                 System.Environment.GetEnvironmentVariable("NATS_URL")
             };
 
-            using (var connection = new ConnectionFactory().CreateConnection(options)) 
+            using (var connection = new ConnectionFactory().CreateConnection(options))
             {
                 var subscription = connection.SubscribeAsync("valuator.processing.rank", "rank_calculator", (sender, args) =>
                 {
                     string id = Encoding.UTF8.GetString(args.Message.Data);
                     string textKey = "TEXT-" + id;
 
-                    if (!_repository.IsKeyExist(textKey))
+                    if (!_repository.IsKeyExist(textKey, id))
                     {
                         _logger.LogWarning("Text key {textKey} doesn't exist", textKey);
 
                         return;
                     }
 
-                    string text = _repository.Get(textKey);
+                    string text = _repository.Get(textKey, id);
 
                     string rankKey = "RANK-" + id;
                     string rank = AnalyzeRank(text).ToString();
 
                     _logger.LogDebug("Rank {rank} with key {rankKey} by text id {id}", rank, rankKey, id);
 
-                    _repository.Save(rankKey, rank);
+                    var regionName = _repository.GetRegionName(id);
+                    _logger.LogDebug("LOOKUP: {textId}, {regionName}", id, regionName);
+
+                    _repository.Save(rankKey, rank, id);
 
                     LogRank(rankKey, id);
                 });

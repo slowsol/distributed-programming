@@ -10,7 +10,7 @@ services:
       context: apps
       dockerfile: Valuator/Dockerfile
     depends_on:
-      - redis
+      - redis_main
       - nats
       - rank_calculator_app
     networks:
@@ -27,7 +27,7 @@ services:
     stdin_open: true
     tty: true
     depends_on:
-      - redis
+      - redis_main
     networks:
       - valuator_network 
   
@@ -42,7 +42,7 @@ services:
     stdin_open: true
     tty: true
     depends_on:
-      - redis
+      - redis_main
     networks:
       - valuator_network  
 
@@ -59,13 +59,35 @@ services:
     networks:
       - valuator_network
 
-  redis:
+  redis_main: &redis_main
     image: redis:latest
-    container_name: valuator_redis
+    container_name: valuator_redis_main
     ports:
       - "6379:6379"
+    hostname: redis_main
     networks:
       - valuator_network
+
+  redis_ru:
+    <<: *redis_main
+    container_name: valuator_redis_ru
+    ports:
+      - "6378:6379"
+    hostname: redis_ru
+  
+  redis_eu:
+    <<: *redis_main
+    container_name: valuator_redis_eu
+    ports:
+      - "6377:6379"
+    hostname: redis_eu
+
+  redis_other:
+    <<: *redis_main
+    container_name: valuator_redis_other
+    ports:
+      - "6376:6379"   
+    hostname: redis_other
 
   nats:
     image: nats
